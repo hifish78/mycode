@@ -7,15 +7,19 @@ import java.util.*;
  * Param 1 String: "this is a sentence it is not a good one and it is also bad"
  * Param 2 Integer: 5
  * 如果给sentence，那么就有三种情况：
+ * sentence it is a sentence
  * sentence it is a good
- * sentence it is also bad
  * sentence it is not a
+ * sentence it is also bad
+ *
  */
 public class WordsPickup {
-    public static List<String> genSubstring(String sentence, String start, int k) {
+    public List<String> genSubstring(String sentence, int k) {
         String[] words = sentence.split(" ");
-        Map<String, Set<String>> map = new HashMap<>();
+        int randId = new Random().nextInt(words.length);
+        String start = words[randId];
 
+        Map<String, Set<String>> map = new HashMap<>();
         for (int i = 0; i < words.length - 1; i++) {
             if (!map.containsKey(words[i])) {
                 map.put(words[i], new HashSet<>());
@@ -27,7 +31,7 @@ public class WordsPickup {
         return res;
     }
 
-    private static void gen(Map<String, Set<String>> map, String start, List<String> path, int k, List<String> res) {
+    private void gen(Map<String, Set<String>> map, String start, List<String> path, int k, List<String> res) {
         path.add(start);
         if (path.size() == k) {
             StringBuilder sb = new StringBuilder();
@@ -37,7 +41,6 @@ public class WordsPickup {
                 }
                 sb.append(p);
             }
-
             res.add(sb.toString());
             path.remove(path.size() - 1);
             return;
@@ -56,14 +59,18 @@ public class WordsPickup {
     }
 
     public static void main(String[] args){
+        WordsPickup wordsPickup = new WordsPickup();
+        String str = "this is a sentence it is not a good one and it is also bad";
+        List<String> res = wordsPickup.genSubstring(str, 5);
+        for (int i = 0; i < res.size(); i++) {
+            System.out.println(res.get(i));
+        }
 
-        String s = "this is a sentence it is not a good one and it is also bad";
+        String str2 = "I am a good student I am not a bad student";
+        List<String> res2 = wordsPickup.genSubstring(str2, 5);
+        for (int i = 0; i < res2.size(); i++) {
+            System.out.println(res2.get(i));
+        }
 
-        System.out.print("");
-        genSubstring(s, "sentence", 5).stream().forEach(w -> System.out.println(w));
-        String[] words = s.split(" ");
-        int randid = new Random().nextInt(words.length);
-        System.out.println("random str:" + words[randid]);
-        genSubstring(s, words[randid], 5).stream().forEach(w -> System.out.println(w));
     }
 }
